@@ -1,0 +1,16 @@
+[
+{
+  "modid": "fastfurnace",
+  "name": "FastFurnace",
+  "description": "2 fast boi",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Shadows_of_Fire"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
