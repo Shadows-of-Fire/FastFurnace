@@ -23,6 +23,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 	public static final int OUTPUT = 2;
 
 	protected ItemStack recipeKey = ItemStack.EMPTY;
+	protected ItemStack failedMatch = ItemStack.EMPTY;
 
 	@ItemStackHolder(value = "minecraft:sponge", meta = 1)
 	public static final ItemStack WET_SPONGE = ItemStack.EMPTY;
@@ -56,8 +57,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 		boolean canSmelt = canSmelt();
 
 		if (!this.isBurning() && !(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
-			if (canSmelt) 
-				burnFuel(fuel, false);
+			if (canSmelt) burnFuel(fuel, false);
 		}
 
 		boolean wasBurning = isBurning();
@@ -69,12 +69,10 @@ public class TileFastFurnace extends TileEntityFurnace {
 		}
 
 		if (!this.isBurning() && !(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
-			if (canSmelt) 
-				burnFuel(fuel, wasBurning);
+			if (canSmelt) burnFuel(fuel, wasBurning);
 		}
 
-		if (wasBurning && !isBurning())
-			world.setBlockState(pos, Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
+		if (wasBurning && !isBurning()) world.setBlockState(pos, Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
 	}
 
 	protected void smelt() {
@@ -97,7 +95,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 
 	protected boolean canSmelt() {
 		ItemStack input = furnaceItemStacks.get(INPUT);
-		if (input.isEmpty()) return false;
+		if (input.isEmpty() || input == failedMatch) return false;
 
 		ItemStack recipeOutput = ItemStack.EMPTY;
 		if (recipeKey.isEmpty() || !OreDictionary.itemMatches(recipeKey, input, false)) {
@@ -107,11 +105,13 @@ public class TileFastFurnace extends TileEntityFurnace {
 					recipeKey = e.getKey();
 					recipeOutput = e.getValue();
 					matched = true;
+					failedMatch = ItemStack.EMPTY;
 					break;
 				}
 			}
 			if (!matched) {
 				recipeKey = ItemStack.EMPTY;
+				failedMatch = input;
 				return false;
 			}
 		}
