@@ -23,6 +23,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 	public static final int OUTPUT = 2;
 
 	protected ItemStack recipeKey = ItemStack.EMPTY;
+	protected ItemStack recipeOutput = ItemStack.EMPTY;
 	protected ItemStack failedMatch = ItemStack.EMPTY;
 
 	@ItemStackHolder(value = "minecraft:sponge", meta = 1)
@@ -95,9 +96,9 @@ public class TileFastFurnace extends TileEntityFurnace {
 
 	protected boolean canSmelt() {
 		ItemStack input = furnaceItemStacks.get(INPUT);
+		ItemStack output = furnaceItemStacks.get(OUTPUT);
 		if (input.isEmpty() || input == failedMatch) return false;
 
-		ItemStack recipeOutput = ItemStack.EMPTY;
 		if (recipeKey.isEmpty() || !OreDictionary.itemMatches(recipeKey, input, false)) {
 			boolean matched = false;
 			for (Entry<ItemStack, ItemStack> e : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
@@ -111,12 +112,13 @@ public class TileFastFurnace extends TileEntityFurnace {
 			}
 			if (!matched) {
 				recipeKey = ItemStack.EMPTY;
+				recipeOutput = ItemStack.EMPTY;
 				failedMatch = input;
 				return false;
 			}
 		}
 
-		return recipeOutput.isEmpty() || ItemHandlerHelper.canItemStacksStack(furnaceItemStacks.get(OUTPUT), recipeOutput);
+		return !recipeOutput.isEmpty() && (output.isEmpty() || (ItemHandlerHelper.canItemStacksStack(recipeOutput, output) && (recipeOutput.getCount() + output.getCount() <= output.getMaxStackSize())));
 	}
 
 	@Override
