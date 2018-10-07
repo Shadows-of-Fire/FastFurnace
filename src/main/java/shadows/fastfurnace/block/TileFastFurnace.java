@@ -88,8 +88,9 @@ public class TileFastFurnace extends TileEntityFurnace {
 	protected void burnFuel(ItemStack fuel, boolean burnedThisTick) {
 		currentItemBurnTime = (furnaceBurnTime = getItemBurnTime(fuel));
 		if (this.isBurning()) {
+			Item item = fuel.getItem();
 			fuel.shrink(1);
-			if (fuel.isEmpty()) furnaceItemStacks.set(FUEL, fuel.getItem().getContainerItem(fuel));
+			if (fuel.isEmpty()) furnaceItemStacks.set(FUEL, item.getContainerItem(fuel));
 			if (!burnedThisTick) world.setBlockState(pos, Blocks.LIT_FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
 		}
 	}
