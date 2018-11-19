@@ -71,7 +71,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 		}
 
 		if (!this.isBurning() && !(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
-			if (canSmelt) burnFuel(fuel, wasBurning);
+			if (canSmelt()) burnFuel(fuel, wasBurning);
 		}
 
 		if (wasBurning && !isBurning()) world.setBlockState(pos, Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
