@@ -31,17 +31,6 @@ public class BlockFastFurnace extends BlockFurnace {
 		return furnace == null ? furnace = Item.getItemFromBlock(Blocks.FURNACE) : furnace;
 	}
 
-	/*
-	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-	}
-	
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-	}
-	*/
-
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState oldState) {
 		IBlockState state = world.getBlockState(pos);
