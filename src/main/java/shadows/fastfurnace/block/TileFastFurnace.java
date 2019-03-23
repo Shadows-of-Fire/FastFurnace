@@ -141,6 +141,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		if (oldState.getBlock() == Blocks.FURNACE && newState.getBlock() == Blocks.LIT_FURNACE) return false;
 		else if (oldState.getBlock() == Blocks.LIT_FURNACE && newState.getBlock() == Blocks.FURNACE) return false;
+		else if (oldState.getBlock() == newState.getBlock()) return false;
 		return true;
 	}
 

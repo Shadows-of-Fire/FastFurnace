@@ -23,7 +23,7 @@ public class FastFurnace {
 
 	public static final String MODID = "fastfurnace";
 	public static final String MODNAME = "FastFurnace";
-	public static final String VERSION = "1.2.1";
+	public static final String VERSION = "1.2.2";
 
 	public static final Logger LOG = LogManager.getLogger(MODID);
 
@@ -38,6 +38,7 @@ public class FastFurnace {
 		Block b = new BlockFastFurnace(false).setRegistryName("minecraft", "furnace");
 		e.getRegistry().registerAll(b, new BlockFastFurnace(true).setRegistryName("minecraft", "lit_furnace"));
 		ForgeRegistries.ITEMS.register(new ItemBlock(b) {
+			@Override
 			public String getCreatorModId(net.minecraft.item.ItemStack itemStack) {
 				return MODID;
 			}
