@@ -74,7 +74,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 			if (canSmelt()) burnFuel(fuel, wasBurning);
 		}
 
-		if (wasBurning && !isBurning()) world.setBlockState(pos, Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
+		if (wasBurning && !isBurning()) BlockFurnace.setState(false, world, pos);
 	}
 
 	protected void smelt() {
@@ -92,7 +92,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 			Item item = fuel.getItem();
 			fuel.shrink(1);
 			if (fuel.isEmpty()) furnaceItemStacks.set(FUEL, item.getContainerItem(fuel));
-			if (!burnedThisTick) world.setBlockState(pos, Blocks.LIT_FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
+			if (!burnedThisTick) BlockFurnace.setState(true, world, pos);
 		}
 	}
 
