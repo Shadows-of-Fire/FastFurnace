@@ -12,6 +12,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -69,9 +70,13 @@ public class TileFastFurnace extends TileEntityFurnace {
 			if (canSmelt) smelt();
 			else cookTime = 0;
 		}
-
-		if (!this.isBurning() && !(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
-			if (canSmelt()) burnFuel(fuel, wasBurning);
+		
+		if (!this.isBurning()) {
+			if (!(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
+				if (canSmelt()) burnFuel(fuel, wasBurning);
+			} else if (cookTime > 0) {
+				cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
+			}
 		}
 
 		if (wasBurning && !isBurning()) BlockFurnace.setState(false, world, pos);
