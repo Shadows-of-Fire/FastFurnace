@@ -12,6 +12,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -69,12 +70,16 @@ public class TileFastFurnace extends TileEntityFurnace {
 			if (canSmelt) smelt();
 			else cookTime = 0;
 		}
-
-		if (!this.isBurning() && !(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
-			if (canSmelt()) burnFuel(fuel, wasBurning);
+		
+		if (!this.isBurning()) {
+			if (!(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
+				if (canSmelt()) burnFuel(fuel, wasBurning);
+			} else if (cookTime > 0) {
+				cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
+			}
 		}
 
-		if (wasBurning && !isBurning()) world.setBlockState(pos, Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
+		if (wasBurning && !isBurning()) BlockFurnace.setState(false, world, pos);
 	}
 
 	protected void smelt() {
@@ -92,7 +97,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 			Item item = fuel.getItem();
 			fuel.shrink(1);
 			if (fuel.isEmpty()) furnaceItemStacks.set(FUEL, item.getContainerItem(fuel));
-			if (!burnedThisTick) world.setBlockState(pos, Blocks.LIT_FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, world.getBlockState(pos).getValue(BlockFurnace.FACING)));
+			if (!burnedThisTick) BlockFurnace.setState(true, world, pos);
 		}
 	}
 
