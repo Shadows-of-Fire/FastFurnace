@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import shadows.fastfurnace.FastFurnace;
 
 public class TileFastFurnace extends TileEntityFurnace {
 
@@ -70,7 +71,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 			if (canSmelt) smelt();
 			else cookTime = 0;
 		}
-		
+
 		if (!this.isBurning()) {
 			if (!(fuel = furnaceItemStacks.get(FUEL)).isEmpty()) {
 				if (canSmelt()) burnFuel(fuel, wasBurning);
@@ -125,7 +126,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 			}
 		}
 
-		return !recipeOutput.isEmpty() && (output.isEmpty() || (ItemHandlerHelper.canItemStacksStack(recipeOutput, output) && (recipeOutput.getCount() + output.getCount() <= output.getMaxStackSize())));
+		return !recipeOutput.isEmpty() && (output.isEmpty() || (itemsMatch(recipeOutput, output) && (recipeOutput.getCount() + output.getCount() <= output.getMaxStackSize())));
 	}
 
 	@Override
@@ -135,7 +136,7 @@ public class TileFastFurnace extends TileEntityFurnace {
 		ItemStack output = this.furnaceItemStacks.get(OUTPUT);
 
 		if (output.isEmpty()) this.furnaceItemStacks.set(OUTPUT, recipeOutput.copy());
-		else if (ItemHandlerHelper.canItemStacksStack(output, recipeOutput)) output.grow(recipeOutput.getCount());
+		else if (itemsMatch(output, recipeOutput)) output.grow(recipeOutput.getCount());
 
 		if (input.isItemEqual(WET_SPONGE) && this.furnaceItemStacks.get(FUEL).getItem() == Items.BUCKET) this.furnaceItemStacks.set(FUEL, new ItemStack(Items.WATER_BUCKET));
 
@@ -148,6 +149,10 @@ public class TileFastFurnace extends TileEntityFurnace {
 		else if (oldState.getBlock() == Blocks.LIT_FURNACE && newState.getBlock() == Blocks.FURNACE) return false;
 		else if (oldState.getBlock() == newState.getBlock()) return false;
 		return true;
+	}
+
+	boolean itemsMatch(ItemStack a, ItemStack b) {
+		return FastFurnace.useStrictMatching ? ItemHandlerHelper.canItemStacksStack(a, b) : (a.isItemEqual(b) && ItemStack.areItemStackTagsEqual(a, b));
 	}
 
 }

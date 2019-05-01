@@ -10,6 +10,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -25,14 +26,19 @@ public class FastFurnace {
 
 	public static final String MODID = "fastfurnace";
 	public static final String MODNAME = "FastFurnace";
-	public static final String VERSION = "1.3.0";
+	public static final String VERSION = "1.3.1";
 
 	public static final Logger LOG = LogManager.getLogger(MODID);
+
+	public static boolean useStrictMatching = true;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		MinecraftForge.EVENT_BUS.register(this);
 		GameRegistry.registerTileEntity(TileFastFurnace.class, new ResourceLocation("minecraft", "furnace"));
+		Configuration c = new Configuration(e.getSuggestedConfigurationFile());
+		useStrictMatching = c.getBoolean("Strict Matching", "general", true, "If the furnace uses nbt-sensitive output matching.");
+		if (c.hasChanged()) c.save();
 	}
 
 	@SubscribeEvent
