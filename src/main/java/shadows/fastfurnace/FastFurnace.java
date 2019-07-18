@@ -44,8 +44,9 @@ public class FastFurnace {
 	@SubscribeEvent
 	public void blockBois(Register<Block> e) {
 		if (shouldRun()) {
-			Block b = new BlockFastFurnace(false).setRegistryName("minecraft", "furnace");
-			e.getRegistry().registerAll(b, new BlockFastFurnace(true).setRegistryName("minecraft", "lit_furnace"));
+			e.getRegistry().registerAll(
+					new BlockFastFurnace(false).setRegistryName("minecraft", "furnace"),
+					new BlockFastFurnace(true).setRegistryName("minecraft", "lit_furnace"));
 		}
 	}
 
