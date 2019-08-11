@@ -54,7 +54,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes(["Specification-Title": "fastworkbench",
+        attributes(["Specification-Title": "fastfurnace",
                     "Specification-Vendor": "shadows_of_fire",
                     "Specification-Version": "24.0", // We are version 1 of the modlauncher specification
                     "Implementation-Title": project.name,
