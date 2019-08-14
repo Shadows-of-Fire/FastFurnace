@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
@@ -11,6 +12,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.event.ForgeEventFactory;
+import shadows.fastfurnace.FastFurnace;
 
 public class TileFastFurnace extends FurnaceTileEntity {
 
@@ -134,6 +137,29 @@ public class TileFastFurnace extends FurnaceTileEntity {
 			if (rec == null) failedMatch = input;
 			else failedMatch = ItemStack.EMPTY;
 			return curRecipe = rec;
+		}
+	}
+
+	@Override
+	protected int getBurnTime(ItemStack p_213997_1_) {
+		if (p_213997_1_.isEmpty()) {
+			return 0;
+		} else {
+			Item item = p_213997_1_.getItem();
+			int ret = p_213997_1_.getBurnTime();
+			return ForgeEventFactory.getItemBurnTime(p_213997_1_, ret == -1 ? FastFurnace.VANILLA_BURNS.getOrDefault(item, 0) : ret);
+		}
+	}
+	
+	@Override
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		if (index == 2) {
+			return false;
+		} else if (index != 1) {
+			return true;
+		} else {
+			ItemStack itemstack = this.items.get(1);
+			return FastFurnace.isFuel(stack) || stack.getItem() == Items.BUCKET && itemstack.getItem() != Items.BUCKET;
 		}
 	}
 
