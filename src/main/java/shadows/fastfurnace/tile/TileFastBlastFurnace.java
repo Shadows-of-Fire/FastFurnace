@@ -147,7 +147,7 @@ public class TileFastBlastFurnace extends BlastFurnaceTileEntity {
 		} else {
 			Item item = p_213997_1_.getItem();
 			int ret = p_213997_1_.getBurnTime();
-			return ForgeEventFactory.getItemBurnTime(p_213997_1_, ret == -1 ? FastFurnace.VANILLA_BURNS.getOrDefault(item, 0) : ret);
+			return ForgeEventFactory.getItemBurnTime(p_213997_1_, ret == -1 ? FastFurnace.VANILLA_BURNS.getOrDefault(item.delegate, 0) : ret);
 		}
 	}
 
