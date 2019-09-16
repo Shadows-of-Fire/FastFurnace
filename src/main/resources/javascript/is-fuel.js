@@ -19,9 +19,10 @@ function initializeCoreMod() {
                 var Opcodes = Java.type('org.objectweb.asm.Opcodes');
                 var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
                 var InsnList = Java.type('org.objectweb.asm.tree.InsnList');
+                var InsnNode = Java.type('org.objectweb.asm.tree.InsnNode');
 
                 var insn = new InsnList();
-                insn.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                insn.add(new VarInsnNode(Opcodes.ALOAD, 0));
                 insn.add(ASMAPI.buildMethodCall(
                     owner,
                     name,

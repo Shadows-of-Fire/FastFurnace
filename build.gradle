@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = '2.2.0'
+version = '2.2.1'
 group = 'shadows.fastfurnace'
 archivesBaseName = 'FastFurnace-1.14.4'
 
