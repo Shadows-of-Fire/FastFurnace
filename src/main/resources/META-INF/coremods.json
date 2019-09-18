@@ -1,5 +1,0 @@
-{
-  "AbstractFurnaceTileEntity_isFuel": "javascript/is-fuel.js",
-  "AbstractFurnaceTileEntity_getBurnTime": "javascript/burn-time.js",
-  "ClientPlayNetHandler_handleTags": "javascript/handle-tags.js"
-}

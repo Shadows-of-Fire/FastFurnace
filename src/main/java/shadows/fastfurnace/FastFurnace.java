@@ -9,20 +9,11 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
-import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IRegistryDelegate;
 import shadows.fastfurnace.block.BlockFastBlastFurnace;
@@ -44,8 +35,6 @@ public class FastFurnace {
 
 	public FastFurnace() {
 		FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::blocks);
-		FurnaceTileEntity.getBurnTimes().entrySet().stream().forEach(e -> VANILLA_BURNS.put(e.getKey().delegate, e.getValue()));
-		MinecraftForge.EVENT_BUS.addListener(this::starting);
 	}
 
 	@SubscribeEvent
@@ -62,47 +51,4 @@ public class FastFurnace {
 		TileEntityType.SMOKER.validBlocks = ImmutableSet.of(b);
 	}
 
-	public void starting(FMLServerAboutToStartEvent e) {
-		e.getServer().getResourceManager().addReloadListener(RL);
-	}
-
-	/**
-	 * ASM Hook: Injected into {@link AbstractFurnaceTileEntity#isFuel}
-	 */
-	public static boolean isFuel(ItemStack stack) {
-		int ret = stack.getBurnTime();
-		return ForgeEventFactory.getItemBurnTime(stack, ret == -1 ? VANILLA_BURNS.getOrDefault(stack.getItem().delegate, 0) : ret) > 0;
-	}
-
-	/**
-	 * ASM Hook: Injected into {@link AbstractFurnaceTileEntity#getBurnTime}
-	 */
-	public static int getBurnTime(ItemStack p_213997_1_) {
-		if (p_213997_1_.isEmpty()) {
-			return 0;
-		} else {
-			Item item = p_213997_1_.getItem();
-			int ret = p_213997_1_.getBurnTime();
-			return ForgeEventFactory.getItemBurnTime(p_213997_1_, ret == -1 ? FastFurnace.VANILLA_BURNS.getOrDefault(item.delegate, 0) : ret);
-		}
-	}
-
-	private static final ReloadListener<Object> RL = new ReloadListener<Object>() {
-
-		@Override
-		protected Object prepare(IResourceManager resourceManagerIn, IProfiler profilerIn) {
-			return null;
-		}
-
-		@Override
-		protected void apply(Object splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
-			FastFurnace.updateBurns();
-		}
-
-	};
-
-	public static void updateBurns() {
-		VANILLA_BURNS.clear();
-		FurnaceTileEntity.getBurnTimes().entrySet().stream().forEach(e -> VANILLA_BURNS.put(e.getKey().delegate, e.getValue()));
-	}
 }
