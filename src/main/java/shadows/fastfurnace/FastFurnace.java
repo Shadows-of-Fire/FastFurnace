@@ -9,11 +9,16 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.village.PointOfInterestType;
+import net.minecraftforge.coremod.api.ASMAPI;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IRegistryDelegate;
 import shadows.fastfurnace.block.BlockFastBlastFurnace;
@@ -23,6 +28,7 @@ import shadows.fastfurnace.tile.TileFastBlastFurnace;
 import shadows.fastfurnace.tile.TileFastFurnace;
 import shadows.fastfurnace.tile.TileFastSmoker;
 import shadows.placebo.util.PlaceboUtil;
+import shadows.placebo.util.ReflectionHelper;
 
 @Mod(FastFurnace.MODID)
 public class FastFurnace {
@@ -49,6 +55,13 @@ public class FastFurnace {
 		PlaceboUtil.registerOverrideBlock(b = new BlockFastSmoker(), MODID);
 		TileEntityType.SMOKER.factory = TileFastSmoker::new;
 		TileEntityType.SMOKER.validBlocks = ImmutableSet.of(b);
+	}
+
+	@SubscribeEvent
+	public void setup(FMLCommonSetupEvent e) {
+		Map<BlockState, PointOfInterestType> types = ReflectionHelper.getPrivateValue(PointOfInterestType.class, null, ASMAPI.mapField("field_221073_u"));
+		Blocks.BLAST_FURNACE.getStateContainer().getValidStates().forEach(s -> types.put(s, PointOfInterestType.ARMORER));
+		Blocks.SMOKER.getStateContainer().getValidStates().forEach(s -> types.put(s, PointOfInterestType.BUTCHER));
 	}
 
 }
