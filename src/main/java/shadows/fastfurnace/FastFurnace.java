@@ -40,7 +40,7 @@ public class FastFurnace {
 	public static boolean useStrictMatching = true;
 
 	public FastFurnace() {
-		FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::blocks);
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
 	@SubscribeEvent
