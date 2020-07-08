@@ -11,7 +11,8 @@ import shadows.fastfurnace.tile.TileFastFurnace;
 public class BlockFastFurnace extends FurnaceBlock {
 
 	public BlockFastFurnace() {
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightValue(13));
+		// TODO MCP-name?: func_235838_a_ -> lightValue
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).func_235838_a_((blockState) -> 13));
 		setRegistryName("minecraft", "furnace");
 	}
 
