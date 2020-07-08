@@ -33,6 +33,6 @@ Furnace improvements. Covers all "furnace-based" vanilla blocks.
 [[dependencies.fastfurnace]]
     modId="placebo"
     mandatory=true
-    versionRange="[3,)"
+    versionRange="[4,)"
     ordering="NONE"
     side="BOTH"
