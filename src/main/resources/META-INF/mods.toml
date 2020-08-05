@@ -12,6 +12,8 @@ version="${file.jarVersion}" #mandatory
 
 displayName="FastFurnace" #mandatory
 
+license="MIT License" #mandatory
+
 description='''
 Furnace improvements. Covers all "furnace-based" vanilla blocks.
 '''
@@ -19,20 +21,20 @@ Furnace improvements. Covers all "furnace-based" vanilla blocks.
 [[dependencies.fastfurnace]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[32,)" #mandatory
+    versionRange="[32.0.106,)" #mandatory
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.fastfurnace]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16,)"
+    versionRange="[1.16.1,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.fastfurnace]]
     modId="placebo"
     mandatory=true
-    versionRange="[4,)"
+    versionRange="[4.1,)"
     ordering="NONE"
     side="BOTH"

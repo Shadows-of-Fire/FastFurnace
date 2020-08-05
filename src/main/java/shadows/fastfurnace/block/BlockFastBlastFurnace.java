@@ -11,7 +11,7 @@ import shadows.fastfurnace.tile.TileFastBlastFurnace;
 public class BlockFastBlastFurnace extends BlastFurnaceBlock {
 
 	public BlockFastBlastFurnace() {
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).setLightLevel((blockState) -> 13));
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightLevel((blockState) -> 13));
 		setRegistryName("minecraft", "blast_furnace");
 	}
 
