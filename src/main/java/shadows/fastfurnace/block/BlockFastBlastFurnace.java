@@ -3,7 +3,7 @@ package shadows.fastfurnace.block;
 import net.minecraft.block.BlastFurnaceBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
 import shadows.fastfurnace.tile.TileFastBlastFurnace;
@@ -11,7 +11,7 @@ import shadows.fastfurnace.tile.TileFastBlastFurnace;
 public class BlockFastBlastFurnace extends BlastFurnaceBlock {
 
 	public BlockFastBlastFurnace() {
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F).lightLevel((blockState) -> 13));
+		super(Block.Properties.from(Blocks.BLAST_FURNACE));
 		setRegistryName("minecraft", "blast_furnace");
 	}
 
