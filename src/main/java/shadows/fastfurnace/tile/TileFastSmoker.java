@@ -3,9 +3,7 @@ package shadows.fastfurnace.tile;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
@@ -58,7 +56,7 @@ public class TileFastSmoker extends SmokerTileEntity {
 					if (this.cookTime == this.cookTimeTotal) {
 						this.cookTime = 0;
 						this.cookTimeTotal = this.func_214005_h();
-						this.smeltItem(irecipe);
+						this.func_214007_c(irecipe);
 						dirty = true;
 					}
 				} else {
@@ -92,29 +90,6 @@ public class TileFastSmoker extends SmokerTileEntity {
 			}
 		}
 		return false;
-	}
-
-	private void smeltItem(@Nullable IRecipe<?> recipe) {
-		if (recipe != null && this.canSmelt(recipe)) {
-			ItemStack itemstack = this.items.get(0);
-			ItemStack itemstack1 = recipe.getRecipeOutput();
-			ItemStack itemstack2 = this.items.get(2);
-			if (itemstack2.isEmpty()) {
-				this.items.set(2, itemstack1.copy());
-			} else if (itemstack2.getItem() == itemstack1.getItem()) {
-				itemstack2.grow(itemstack1.getCount());
-			}
-
-			if (!this.world.isRemote) {
-				this.setRecipeUsed(recipe);
-			}
-
-			if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.items.get(1).isEmpty() && this.items.get(1).getItem() == Items.BUCKET) {
-				this.items.set(1, new ItemStack(Items.WATER_BUCKET));
-			}
-
-			itemstack.shrink(1);
-		}
 	}
 
 	@Override
