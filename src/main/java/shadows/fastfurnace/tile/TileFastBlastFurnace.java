@@ -55,8 +55,8 @@ public class TileFastBlastFurnace extends BlastFurnaceTileEntity {
 					++this.cookTime;
 					if (this.cookTime == this.cookTimeTotal) {
 						this.cookTime = 0;
-						this.cookTimeTotal = this.func_214005_h();
-						this.func_214007_c(irecipe);
+						this.cookTimeTotal = this.getCookTime();
+						this.smelt(irecipe);
 						dirty = true;
 					}
 				} else {
@@ -93,7 +93,7 @@ public class TileFastBlastFurnace extends BlastFurnaceTileEntity {
 	}
 
 	@Override
-	protected int func_214005_h() {
+	protected int getCookTime() {
 		AbstractCookingRecipe rec = getRecipe();
 		if (rec == null) return 200;
 		return rec.getCookTime();
