@@ -2,39 +2,37 @@ modLoader="javafml" #mandatory
 
 loaderVersion="[32,)" #mandatory
 
-authors="Shadows_of_Fire" #optional
+authors="${author}" #optional
 
 license="MIT License" #mandatory
 
 [[mods]] #mandatory
 
-modId="fastfurnace" #mandatory
+modId="${modid}" #mandatory
 
-version="${file.jarVersion}" #mandatory
+version="${version}" #mandatory
 
-displayName="FastFurnace" #mandatory
+displayName="${displayName}" #mandatory
 
-description='''
-Furnace improvements. Covers all "furnace-based" vanilla blocks.
-'''
+description='''${desc}'''
 
-[[dependencies.fastfurnace]] #optional
+[[dependencies.${modid}]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[35.1.36,)" #mandatory
+    versionRange="[${forgeVersion},)" #mandatory
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.fastfurnace]]
+[[dependencies.${modid}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4,)"
+    versionRange="[${mcVersion},)"
     ordering="NONE"
     side="BOTH"
-
-[[dependencies.fastfurnace]]
+	
+[[dependencies.${modid}]]
     modId="placebo"
     mandatory=true
-    versionRange="[4.4.1,)"
+    versionRange="[4.6.0,)"
     ordering="NONE"
     side="BOTH"
