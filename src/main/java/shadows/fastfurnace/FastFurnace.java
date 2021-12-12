@@ -1,10 +1,9 @@
 package shadows.fastfurnace;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 
@@ -16,7 +15,7 @@ public class FastFurnace {
 
 	public FastFurnace() {
 		String version = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
-		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> version, (remoteVer, isNetwork) -> remoteVer == null || version.equals(remoteVer)));
+		ModLoadingContext.get().registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> version, (remoteVer, isNetwork) -> remoteVer == null || version.equals(remoteVer)));
 	}
 
 }
