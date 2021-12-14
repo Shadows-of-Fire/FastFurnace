@@ -36,13 +36,13 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
 	@SuppressWarnings("unchecked")
 	protected AbstractCookingRecipe getRecipe() {
 		ItemStack input = this.getItem(0);
-		if (input.isEmpty() || (ItemStack.isSame(failedMatch, input) && ItemStack.tagMatches(failedMatch, input))) return null;
-		if (curRecipe != null && curRecipe.matches(this, level)) return curRecipe;
+		if (input.isEmpty() || ItemStack.isSame(this.failedMatch, input) && ItemStack.tagMatches(this.failedMatch, input)) return null;
+		if (this.curRecipe != null && this.curRecipe.matches(this, this.level)) return this.curRecipe;
 		else {
-			AbstractCookingRecipe rec = level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) this.recipeType, this, this.level).orElse(null);
-			if (rec == null) failedMatch = input.copy();
-			else failedMatch = ItemStack.EMPTY;
-			return curRecipe = rec;
+			AbstractCookingRecipe rec = this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) this.recipeType, this, this.level).orElse(null);
+			if (rec == null) this.failedMatch = input.copy();
+			else this.failedMatch = ItemStack.EMPTY;
+			return this.curRecipe = rec;
 		}
 	}
 
