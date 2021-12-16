@@ -47,7 +47,7 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
 	}
 
 	@Overwrite
-	private static int getTotalCookTime(Level pLevel, RecipeType<? extends AbstractCookingRecipe> pRecipeType, Container pContainer) {
+	public static int getTotalCookTime(Level pLevel, RecipeType<? extends AbstractCookingRecipe> pRecipeType, Container pContainer) {
 		AbstractCookingRecipe rec = ((MixinAbstractFurnaceBlockEntity) pContainer).getRecipe();
 		return rec == null ? 200 : rec.getCookingTime();
 	}

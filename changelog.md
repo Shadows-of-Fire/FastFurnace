@@ -1,3 +1,6 @@
+## 6.0.1
+* Changed the signature of the getTotalCookTime overwrite to public to not crash when AT's are involved.
+
 ## 6.0.0
 * Updated to 1.18.1
 
