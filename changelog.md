@@ -1,3 +1,6 @@
+## 6.0.2
+* Update to Placebo 6.1.0
+
 ## 6.0.1
 * Changed the signature of the getTotalCookTime overwrite to public to not crash when AT's are involved.
 
