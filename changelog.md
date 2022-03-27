@@ -1,3 +1,6 @@
+## 6.0.3
+* Rebuilt for 1.18.2
+
 ## 6.0.2
 * Update to Placebo 6.1.0
 
