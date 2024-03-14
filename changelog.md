@@ -1,3 +1,6 @@
+## 8.0.2
+* Changed the `getTotalCookTime` overwrite to be a head-inject-cancel, as the overwrite was failing when an AT was present.
+
 ## 8.0.1
 * Removed forge dependency line from the mods.toml and marked as Forge and NeoForge for CF.
   * The dependency will be added back and the Forge marker will be removed once CF supports Neo correctly.
