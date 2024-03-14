@@ -3,10 +3,12 @@ package dev.shadowsoffire.fastfurnace.mixin;
 import java.util.Optional;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -27,7 +29,9 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
         super(p_155076_, p_155077_, p_155078_);
     }
 
+    @Unique
     protected AbstractCookingRecipe curRecipe;
+    @Unique
     protected ItemStack failedMatch = ItemStack.EMPTY;
 
     @Shadow
@@ -46,10 +50,11 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
         }
     }
 
-    @Overwrite
-    private static int getTotalCookTime(Level pLevel, AbstractFurnaceBlockEntity pBlockEntity) {
+    // Has to be public due to possiblity of AT application to this method.
+    @Inject(at = @At("HEAD"), method = "getTotalCookTime", cancellable = true)
+    private static void fastfurnace_useFFRecipeCache(Level pLevel, AbstractFurnaceBlockEntity pBlockEntity, CallbackInfoReturnable<Integer> cir) {
         AbstractCookingRecipe rec = ((MixinAbstractFurnaceBlockEntity) (Object) pBlockEntity).getRecipe();
-        return rec == null ? 200 : rec.getCookingTime();
+        cir.setReturnValue(rec == null ? 200 : rec.getCookingTime());
     }
 
     @Redirect(method = "serverTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/crafting/RecipeManager$CachedCheck;getRecipeFor(Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;"), require = 1)
