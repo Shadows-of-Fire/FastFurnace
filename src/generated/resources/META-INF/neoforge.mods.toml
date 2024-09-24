@@ -1,0 +1,41 @@
+modLoader="javafml"
+
+loaderVersion="[2,)"
+
+license="MIT License"
+
+[[mods]] #mandatory
+
+modId="fastfurnace"
+
+version="8.0.2"
+
+displayName="FastFurnace"
+
+authors="Shadows_of_Fire"
+
+description='''Furnacing things faster, performance-wise'''
+
+[[mixins]]
+config="fastfurnace.mixins.json"
+
+[[dependencies.fastfurnace]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.fastfurnace]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.61,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.fastfurnace]]
+    modId="placebo"
+    type="required"
+    versionRange="[9.5.3,)"
+    ordering="AFTER"
+    side="BOTH"

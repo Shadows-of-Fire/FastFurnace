@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "package": "dev.shadowsoffire.fastfurnace.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "refmap": "fastfurnace.refmap.json",
+    "maxShiftBy": 5,
+    "mixins": [
+        "MixinAbstractFurnaceBlockEntity"
+    ],
+    "client": [
+
+    ],
+    "minVersion": "0.8",
+    "maxShiftBy": 5
+}
