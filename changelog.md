@@ -1,3 +1,6 @@
+## 9.0.0
+* Updated to 1.21.1
+
 ## 8.0.2
 * Changed the `getTotalCookTime` overwrite to be a head-inject-cancel, as the overwrite was failing when an AT was present.
 
