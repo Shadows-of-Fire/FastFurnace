@@ -1,3 +1,6 @@
+## 9.0.1
+* Updated to Placebo 9.9.0
+
 ## 9.0.0
 * Updated to 1.21.1
 
