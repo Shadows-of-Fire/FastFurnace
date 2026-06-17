@@ -3,13 +3,12 @@
     "package": "${modGroup}.${modid}.mixin",
     "compatibilityLevel": "JAVA_${javaVersion}",
     "refmap": "${modid}.refmap.json",
-    "maxShiftBy": 5,
+    "maxShiftBy": 0,
     "mixins": [
 ${mixins}
     ],
     "client": [
 ${clientMixins}
     ],
-    "minVersion": "0.8",
-    "maxShiftBy": 5
+    "minVersion": "0.8"
 }

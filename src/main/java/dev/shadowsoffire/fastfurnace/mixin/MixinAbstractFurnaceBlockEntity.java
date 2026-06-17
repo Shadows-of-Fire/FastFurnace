@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager.CachedCheck;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -44,17 +44,20 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
 
     @Nullable
     @SuppressWarnings("unchecked")
-    protected RecipeHolder<AbstractCookingRecipe> getRecipe() {
+    protected RecipeHolder<AbstractCookingRecipe> getRecipe(ServerLevel level) {
         ItemStack input = this.getItem(0);
         if (input.isEmpty() || ItemStack.isSameItemSameComponents(this.failedMatch, input)) {
             return null;
         }
 
-        if (this.curRecipe != null && this.curRecipe.value().matches(new SingleRecipeInput(input), this.level)) {
+        SingleRecipeInput recipeInput = new SingleRecipeInput(input);
+        if (this.curRecipe != null && this.curRecipe.value().matches(recipeInput, level)) {
             return this.curRecipe;
         }
         else {
-            RecipeHolder<AbstractCookingRecipe> rec = this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) this.recipeType, new SingleRecipeInput(input), this.level).orElse(null);
+            RecipeHolder<AbstractCookingRecipe> rec = level.recipeAccess()
+                .getRecipeFor((RecipeType<AbstractCookingRecipe>) this.recipeType, recipeInput, level)
+                .orElse(null);
 
             if (rec == null) {
                 this.failedMatch = input.copy();
@@ -68,14 +71,14 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
     }
 
     @Inject(at = @At("HEAD"), method = "getTotalCookTime", cancellable = true)
-    private static void fastfurnace_useFFRecipeCache(Level pLevel, AbstractFurnaceBlockEntity pBlockEntity, CallbackInfoReturnable<Integer> cir) {
-        RecipeHolder<AbstractCookingRecipe> rec = ((MixinAbstractFurnaceBlockEntity) (Object) pBlockEntity).getRecipe();
-        cir.setReturnValue(rec == null ? 200 : rec.value().getCookingTime());
+    private static void fastfurnace_useFFRecipeCache(ServerLevel pLevel, AbstractFurnaceBlockEntity pBlockEntity, CallbackInfoReturnable<Integer> cir) {
+        RecipeHolder<AbstractCookingRecipe> rec = ((MixinAbstractFurnaceBlockEntity) (Object) pBlockEntity).getRecipe(pLevel);
+        cir.setReturnValue(rec == null ? 200 : rec.value().cookingTime());
     }
 
-    @Redirect(method = "serverTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/crafting/RecipeManager$CachedCheck;getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeInput;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;"), require = 1)
-    private static Optional<RecipeHolder<?>> getRecipe(CachedCheck<?, ?> c, RecipeInput inv, Level level, Level levelAgain, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
-        return Optional.ofNullable(((MixinAbstractFurnaceBlockEntity) (Object) blockEntity).getRecipe());
+    @Redirect(method = "serverTick(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/crafting/RecipeManager$CachedCheck;getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeInput;Lnet/minecraft/server/level/ServerLevel;)Ljava/util/Optional;"), require = 1)
+    private static Optional<RecipeHolder<?>> fastfurnace_getRecipe(CachedCheck<?, ?> c, RecipeInput inv, ServerLevel level, ServerLevel levelAgain, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
+        return Optional.ofNullable(((MixinAbstractFurnaceBlockEntity) (Object) blockEntity).getRecipe(level));
     }
 
 }
