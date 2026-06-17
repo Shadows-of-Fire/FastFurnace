@@ -1,3 +1,6 @@
+## 10.0.0
+* Ported to Minecraft 26.1.2.
+
 ## 9.0.1
 * Updated to Placebo 9.9.0
 
